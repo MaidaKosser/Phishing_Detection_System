@@ -1,122 +1,94 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import React, { useState } from 'react';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [url, setUrl] = useState('');
+  const [result, setResult] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  // Localhost Flask Backend URL (Aapki python app.py is port par chal rahi hogi)
+  const LOCAL_BACKEND_URL = "http://127.0.0.1:5000/predict";
+
+  const handleCheckUrl = async (e) => {
+    e.preventDefault();
+    if (!url.trim()) {
+      setError("Please enter a web URL first.");
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+    setResult('');
+
+    try {
+      const response = await fetch(LOCAL_BACKEND_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: url }),
+      });
+
+      const data = await response.json();
+      if (data.status === 'success') {
+        setResult(data.prediction);
+      } else {
+        setError(data.error || "An error occurred during detection.");
+      }
+    } catch (err) {
+      setError("Cannot connect to Python server. Make sure 'python app.py' terminal me chal raha hai!");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div style={styles.container}>
+      <div style={styles.card}>
+        <h1 style={styles.title}>🛡️ Phishing Website Detection (Vite App)</h1>
+        <p style={styles.subtitle}>React Frontend connected locally to Flask Deep Learning Pipeline.</p>
 
-      <div className="ticks"></div>
+        <form onSubmit={handleCheckUrl} style={styles.form}>
+          <input
+            type="text"
+            placeholder="Enter URL (e.g., secure-paypal-login.com)"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            style={styles.input}
+            disabled={loading}
+          />
+          <button type="submit" style={styles.button} disabled={loading}>
+            {loading ? 'Scanning...' : 'Scan URL'}
+          </button>
+        </form>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        {error && <div style={styles.errorAlert}>{error}</div>}
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        {result && (
+          <div style={result === 'Phishing' ? styles.phishingResult : styles.safeResult}>
+            <h3 style={{ margin: '0 0 5px 0' }}>Analysis Result: {result.toUpperCase()}</h3>
+            <p style={{ margin: 0 }}>
+              {result === 'Phishing' 
+                ? '⚠️ Malicious link detected! This matches known phishing token structures.' 
+                : '✅ Structural layout looks benign. Website is safe to visit.'}
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
-export default App
+// Clean Styles for Presentation
+const styles = {
+  container: { display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: '#f3f4f6', fontFamily: 'Arial, sans-serif' },
+  card: { backgroundColor: '#ffffff', padding: '40px', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', maxWidth: '600px', width: '100%', textAlign: 'center' },
+  title: { fontSize: '24px', color: '#1f2937', marginBottom: '10px' },
+  subtitle: { fontSize: '14px', color: '#6b7280', marginBottom: '25px' },
+  form: { display: 'flex', gap: '10px', marginBottom: '20px' },
+  input: { flex: 1, padding: '12px', borderRadius: '5px', border: '1px solid #d1d5db', fontSize: '15px' },
+  button: { backgroundColor: '#2563eb', color: '#ffffff', border: 'none', padding: '12px 24px', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold', fontSize: '15px' },
+  errorAlert: { backgroundColor: '#fee2e2', color: '#b91c1c', padding: '12px', borderRadius: '5px', marginBottom: '20px', fontSize: '14px' },
+  phishingResult: { backgroundColor: '#fef2f2', border: '2px solid #f87171', borderRadius: '6px', padding: '15px', color: '#991b1b', textAlign: 'left' },
+  safeResult: { backgroundColor: '#f0fdf4', border: '2px solid #4ade80', borderRadius: '6px', padding: '15px', color: '#166534', textAlign: 'left' }
+};
+
+export default App;
