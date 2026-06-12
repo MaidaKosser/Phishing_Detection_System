@@ -13,8 +13,8 @@ def clean_url(url_text):
     return [w for w in words if len(w) > 0]
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MPATH = os.path.join(BASE_DIR, 'phishing_dl_model.pkl')
-EPATH = os.path.join(BASE_DIR, 'tfidf_encoder.pkl')
+MPATH = os.path.join(BASE_DIR, 'models', 'phishing_dl_model.pkl')
+EPATH = os.path.join(BASE_DIR, 'models', 'tfidf_encoder.pkl')
 
 model = None
 encoder = None
