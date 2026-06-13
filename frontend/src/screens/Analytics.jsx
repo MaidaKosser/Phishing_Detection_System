@@ -1,44 +1,61 @@
-import { Server, HardDrive } from 'lucide-react';
+import Card from '../components/Card';
 
 export default function Analytics() {
+  const telemetryData = [
+    { label: 'Mon', total: 70, threats: 15 },
+    { label: 'Tue', total: 95, threats: 24 },
+    { label: 'Wed', total: 120, threats: 12 },
+    { label: 'Thu', total: 150, threats: 45 },
+    { label: 'Fri', total: 110, threats: 18 }
+  ];
+
   return (
-    <div style={{ animation: 'fadeIn 0.3s ease' }}>
-      <header style={{ textAlign: 'center', marginBottom: '40px' }}>
-        <h1 style={{ fontSize: '2.2rem', fontWeight: '800', color: '#ffffff' }}>Pipeline Diagnostics Matrix</h1>
-        <p style={{ color: '#64748b' }}>Comparative architecture telemetry of live detection modules.</p>
+    <div className="animated-node">
+      <header style={{ marginBottom: '36px' }}>
+        <h1 style={{ fontSize: '2.1rem', fontWeight: '800', margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>Platform Telemetry</h1>
+        <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.95rem' }}>Calculated statistical distribution logs of vector evaluations.</p>
       </header>
 
-      <div style={analyticsStyles.statsRow}>
-        <div style={analyticsStyles.tile}><h3>14,205</h3><span>Total Matrix Requests</span></div>
-        <div style={analyticsStyles.tile}><h3 style={{ color: '#ef4444' }}>4,102</h3><span>Phishing Blocked</span></div>
-        <div style={analyticsStyles.tile}><h3 style={{ color: '#38bdf8' }}>95.2%</h3><span>Deep Learning (MLP)</span></div>
-        <div style={analyticsStyles.tile}><h3 style={{ color: '#a855f7' }}>94.8%</h3><span>LinearSVC (ML)</span></div>
+      <div className="fluid-grid" style={{ marginBottom: '32px' }}>
+        <Card title="Total Scans Run" value="14,205" subtext="Aggregated interface strings" />
+        <Card title="Threat Vectors Caught" value="4,102" subtext="Isolated fake hubs" status="danger" />
+        <Card title="Neural Net Accuracy" value="95.2%" subtext="Validated model accuracy" status="safe" />
+        <Card title="Support Vector Matrix" value="94.8%" subtext="Linear validation accuracy" status="safe" />
       </div>
 
-      <div style={analyticsStyles.flexGrid}>
-        <div style={analyticsStyles.box}>
-          <h3 style={analyticsStyles.headerTitle}><Server size={18} color="#38bdf8" /> Deep Learning Layer</h3>
-          <p style={analyticsStyles.headerDesc}>The Multi-Layer Perceptron utilizes backpropagation weights to detect complex anomalies inside custom segmented sub-string tokens.</p>
-          <div style={analyticsStyles.row}><span>Architecture Topology</span><strong>Artificial Neural Net (ANN)</strong></div>
-          <div style={analyticsStyles.row}><span>Hidden Configurations</span><span>(64, 32) Connected Neurons</span></div>
+      {/* Clean Premium Light Graph */}
+      <div className="clean-shadow" style={styles.chartPanel}>
+        <div style={styles.chartTitle}>Weekly Log Traffic Distribution</div>
+        <div style={styles.graphCanvas}>
+          {telemetryData.map((node, i) => (
+            <div key={i} style={styles.graphCol}>
+              <div style={styles.barStack}>
+                <div style={{ ...styles.barScan, height: `${node.total * 1.2}px` }}></div>
+                <div style={{ ...styles.barThreat, height: `${node.threats * 1.2}px` }}></div>
+              </div>
+              <div style={styles.label}>{node.label}</div>
+            </div>
+          ))}
         </div>
-        <div style={analyticsStyles.box}>
-          <h3 style={analyticsStyles.headerTitle}><HardDrive size={18} color="#a855f7" /> Machine Learning Boundary</h3>
-          <p style={analyticsStyles.headerDesc}>Support Vector Classifiers process global features across linear boundaries to find hyperplanes max-separating binary labels.</p>
-          <div style={analyticsStyles.row}><span>Mathematical Class</span><strong>Support Vector Machine (LinearSVC)</strong></div>
-          <div style={analyticsStyles.row}><span>Evaluated Target Range</span><span>20,000 Spatial Token Fields</span></div>
+        <div style={styles.legendWrapper}>
+          <div style={styles.legend}><div style={{ ...styles.dot, backgroundColor: 'var(--brand-accent)' }}></div> Total Inputs Scanned</div>
+          <div style={styles.legend}><div style={{ ...styles.dot, backgroundColor: 'var(--matrix-red)' }}></div> Isolated Threat Strings</div>
         </div>
       </div>
     </div>
   );
 }
 
-const analyticsStyles = {
-  statsRow: { display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '30px' },
-  tile: { backgroundColor: '#0b101d', border: '1px solid #111827', borderRadius: '12px', padding: '20px', flex: '1 1 200px', textAlign: 'center' },
-  flexGrid: { display: 'flex', flexWrap: 'wrap', gap: '20px' },
-  box: { backgroundColor: '#0a0f1d', border: '1px solid #161f38', padding: '24px', borderRadius: '16px', flex: '1 1 400px' },
-  headerTitle: { fontSize: '1.1rem', fontWeight: '700', margin: '0 0 10px 0', display: 'flex', alignItems: 'center', gap: '8px', color: '#ffffff' },
-  headerDesc: { color: '#64748b', fontSize: '0.85rem', lineHeight: '1.5', marginBottom: '16px' },
-  row: { display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid #111827', fontSize: '0.88rem', color: '#94a3b8' }
+const styles = {
+  chartPanel: { backgroundColor: 'var(--bg-panel)', border: '1px solid var(--panel-border)', borderRadius: '12px', padding: '24px' },
+  chartTitle: { fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '32px', letterSpacing: '0.05em' },
+  graphCanvas: { display: 'flex', justifyContent: 'space-around', alignItems: 'flex-end', height: '220px', borderBottom: '1px solid var(--panel-border)', paddingBottom: '8px' },
+  graphCol: { display: 'flex', flexDirection: 'column', alignItems: 'center', width: '50px' },
+  barStack: { display: 'flex', alignItems: 'flex-end', gap: '8px', height: '180px' },
+  barScan: { width: '16px', backgroundColor: 'var(--brand-accent)', borderRadius: '4px 4px 0 0' },
+  barThreat: { width: '16px', backgroundColor: 'var(--matrix-red)', borderRadius: '4px 4px 0 0' },
+  label: { fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '8px', fontWeight: '600' },
+  legendWrapper: { display: 'flex', gap: '24px', marginTop: '24px', justifyContent: 'center' },
+  legend: { display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '600' },
+  dot: { width: '8px', height: '8px', borderRadius: '50%' }
 };

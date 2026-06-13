@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Radio, Cpu, Layers, Globe, ArrowRight, Loader2, ShieldCheck, ShieldAlert } from 'lucide-react';
+import Card from '../components/Card';
+import ScanInput from '../components/ScanInput';
 
 export default function Home() {
   const [url, setUrl] = useState('');
@@ -8,7 +9,7 @@ export default function Home() {
 
   const handleScan = async (e) => {
     e.preventDefault();
-    if (!url.trim()) return alert("Please enter a URL first!");
+    if (!url.trim()) return alert("Vector signature empty.");
     setLoading(true);
     setResult(null);
 
@@ -19,80 +20,101 @@ export default function Home() {
         body: JSON.stringify({ url: url.trim() }),
       });
       const data = await response.json();
-      if (data.status === 'success') {
-        setResult(data.prediction);
-      } else {
-        alert("Server Error: " + data.error);
-      }
+      if (data.status === 'success') setResult(data.prediction);
     } catch {
-      alert("API Error: Ensure Flask backend is running on Port 5000.");
+      alert("Local Engine Gateway connection timeout.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={styles.viewWrapper}>
-      <header style={styles.header}>
-        <div style={styles.badge}><Radio size={12} className="animate-pulse" /> Live Hybrid Detection Active</div>
-        <h1 style={styles.title}>Phishing Protection Ecosystem</h1>
-        <p style={styles.sub}>Analyze domain signatures in real-time using localized multi-layer matrix weights.</p>
+    <div className="animated-node" style={styles.container}>
+      
+      {/* --- HERO HEADER SECTION --- */}
+      <header style={styles.headerBlock}>
+        <div style={styles.badge}>REAL-TIME DETECTION SYSTEM</div>
+        <h1 style={styles.mainTitle}>
+          Deceptive URL Detection Gateway
+        </h1>
+        <p style={styles.subTitle}>
+          Analyze domain structures instantly using our dual-engine machine learning and deep learning architecture to filter out phishing hubs before they compromise user data.
+        </p>
       </header>
 
-      <div style={styles.grid}>
-        <div style={styles.card}><Cpu color="#38bdf8" size={20} style={{ flexShrink: 0 }} /><div><strong>Primary Engine:</strong> MLP Neural Net Architecture</div></div>
-        <div style={styles.card}><Layers color="#a855f7" size={20} style={{ flexShrink: 0 }} /><div><strong>Security Filter:</strong> Adaptive Master Whitelist Layer</div></div>
-      </div>
-
-      <div style={styles.panel}>
-        <form onSubmit={handleScan}>
-          <label style={styles.label}>Analyze Cyber Payload Signature</label>
-          <div style={styles.inputWrapper}>
-            <div style={styles.icon}><Globe size={18} /></div>
-            <input type="text" placeholder="Input URL pattern signature (e.g., login-secure-paypal.com)..." value={url} onChange={(e) => setUrl(e.target.value)} style={styles.field} />
-          </div>
-          {!loading ? (
-            <button type="submit" style={styles.btn}>Execute Integrity Scan Pipeline <ArrowRight size={16} /></button>
-          ) : (
-            <div style={styles.loader}><Loader2 className="animate-spin" size={18} /> Deploying structural vector arrays...</div>
-          )}
-        </form>
+      {/* --- LIVE UTILITY SCANNING TERMINAL --- */}
+      <section style={styles.sectionGap}>
+        <ScanInput 
+          value={url} 
+          onChange={(e) => setUrl(e.target.value)} 
+          onSubmit={handleScan} 
+          loading={loading} 
+          label="Neural Network Query Routing Gateway" 
+          placeholder="Paste targeted URL here (e.g., secure-login-verification.com)..." 
+        />
 
         {result && (
-          <div style={{ ...styles.res, borderColor: result.toLowerCase() === 'safe' ? '#22c55e40' : '#ef444440', backgroundColor: result.toLowerCase() === 'safe' ? '#064e3b15' : '#7f1d1d15' }}>
-            <div style={styles.resFlex}>
-              {result.toLowerCase() === 'safe' ? <ShieldCheck size={28} color="#22c55e" style={{ flexShrink: 0 }} /> : <ShieldAlert size={28} color="#ef4444" style={{ flexShrink: 0 }} />}
-              <div>
-                <div style={styles.resLabel}>Assessment Classification Verdict</div>
-                <h3 style={{ margin: '0 0 4px 0', fontSize: '1.15rem', color: result.toLowerCase() === 'safe' ? '#22c55e' : '#ef4444' }}>STATUS: {result.toUpperCase()}</h3>
-                <p style={{ margin: 0, fontSize: '0.85rem', color: '#94a3b8', lineHeight: '1.4' }}>
-                  {result.toLowerCase() === 'safe' ? "Structural integrity check cleared. Secure target signature." : "Dangerous sub-tokens caught. Malicious pattern matched inside pipeline weights."}
-                </p>
-              </div>
-            </div>
+          <div className="premium-shadow" style={{ 
+            ...styles.verdictPanel, 
+            borderColor: result.toLowerCase() === 'safe' ? 'var(--matrix-green)' : 'var(--matrix-red)', 
+            backgroundColor: result.toLowerCase() === 'safe' ? '#f0fdf4' : '#fef2f2' 
+          }}>
+            <div style={styles.verdictMeta}>CLASSIFICATION MATRIX VERDICT</div>
+            <h2 style={{ 
+              ...styles.verdictStatus, 
+              color: result.toLowerCase() === 'safe' ? 'var(--matrix-green)' : 'var(--matrix-red)' 
+            }}>
+              SYSTEM STATUS: {result.toUpperCase()}
+            </h2>
+            <p style={styles.verdictDesc}>
+              {result.toLowerCase() === 'safe' 
+                ? "Token features cleared the neural classification threshold safely. This domain does not match any known malicious distribution layouts." 
+                : "Critical Anomaly: The lexical pattern and token distribution array strongly correlate with active deceptive blueprints."
+              }
+            </p>
           </div>
         )}
-      </div>
+      </section>
+
+      {/* --- PERFORMANCE ARCHITECTURE CARDS --- */}
+      <section style={styles.sectionGap}>
+        <div style={styles.sectionHeading}>DEPLOYED SYSTEM PERFORMANCE</div>
+        <div className="fluid-grid">
+          <Card title="LinearSVC Core Layer" value="94.8% Accuracy" subtext="Hyperplane margin mapping via high-dimensional token space." status="safe" />
+          <Card title="MLPClassifier ANN" value="95.2% Accuracy" subtext="Multi-Layer Perceptron deploying dynamic ReLU hidden nodes." status="safe" />
+          <Card title="Vector Grid Features" value="20,000 Dimensions" subtext="Calculated string weights via TF-IDF Vectorizer configuration." />
+          <Card title="Hybrid Core Layer" value="Whitelist Active" subtext="Production fallback system protecting verified trusted nodes." status="safe" />
+        </div>
+      </section>
+
+      {/* --- BRIEF PLATFORM OVERVIEW (CLEAN & MINIMAL) --- */}
+      <section className="clean-shadow" style={styles.overviewBlock}>
+        <h3 style={styles.blockTitle}>How Deception Analysis Works</h3>
+        <p style={styles.blockText}>
+          Unlike traditional static blacklists that fail against zero-day phishing setups, <strong>AntiPhish parses the raw lexical DNA of a website link</strong>. By transforming character sequences into high-dimensional numerical feature blocks, our synchronized classification layers capture subtle mathematical red flags—such as token abnormalities and high-entropy subdomains—in milliseconds.
+        </p>
+      </section>
+
     </div>
   );
 }
 
 const styles = {
-  viewWrapper: { animation: 'fadeIn 0.3s ease-out', width: '100%', boxSizing: 'border-box' },
-  header: { textAlign: 'center', marginBottom: '32px' },
-  badge: { display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 12px', backgroundColor: '#16a5e912', border: '1px solid #16a5e920', borderRadius: '20px', color: '#38bdf8', fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '14px' },
-  title: { fontSize: 'calc(1.6rem + 1vw)', fontWeight: '800', color: '#ffffff', margin: '0 0 10px 0', letterSpacing: '-0.02em', lineHeight: '1.2' },
-  sub: { color: '#64748b', fontSize: '0.95rem', margin: '0 auto', maxWidth: '550px', lineHeight: '1.5' },
-  grid: { display: 'flex', flexWrap: 'wrap', gap: '14px', marginBottom: '24px', width: '100%' },
-  card: { display: 'flex', alignItems: 'center', gap: '12px', padding: '14px', backgroundColor: '#0b101d', border: '1px solid #1e293b', borderRadius: '10px', flex: '1 1 240px', color: '#e2e8f0', fontSize: '0.85rem', boxSizing: 'border-box' },
-  panel: { backgroundColor: '#0a0f1d', border: '1px solid #161f38', padding: '24px', borderRadius: '14px', boxSizing: 'border-box' },
-  label: { display: 'block', fontSize: '0.75rem', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.02em' },
-  inputWrapper: { display: 'flex', position: 'relative', alignItems: 'center', width: '100%' },
-  icon: { position: 'absolute', left: '14px', color: '#475569', display: 'flex', alignItems: 'center' },
-  field: { width: '100%', padding: '14px 14px 14px 42px', backgroundColor: '#02040a', border: '1px solid #22314d', borderRadius: '8px', color: '#ffffff', fontSize: '0.95rem', boxSizing: 'border-box', outline: 'none', fontFamily: 'inherit' },
-  btn: { width: '100%', marginTop: '14px', padding: '14px', backgroundColor: '#38bdf8', color: '#05070f', border: 'none', borderRadius: '8px', fontSize: '0.95rem', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', transition: 'opacity 0.2s' },
-  loader: { width: '100%', marginTop: '14px', padding: '14px', backgroundColor: '#111827', color: '#38bdf8', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', border: '1px solid #1f2937', fontSize: '0.95rem' },
-  res: { marginTop: '20px', padding: '16px', borderRadius: '10px', border: '1px solid', boxSizing: 'border-box' },
-  resFlex: { display: 'flex', gap: '14px', alignItems: 'flex-start' },
-  resLabel: { fontSize: '0.7rem', fontWeight: '700', textTransform: 'uppercase', color: '#64748b', marginBottom: '2px', letterSpacing: '0.02em' }
+  container: { paddingBottom: '40px' },
+  headerBlock: { marginBottom: '32px', textAlign: 'left' },
+  badge: { display: 'inline-block', backgroundColor: 'var(--bg-panel)', border: '1px solid var(--panel-border)', padding: '6px 12px', borderRadius: '4px', fontSize: '0.72rem', fontWeight: '700', letterSpacing: '0.06em', color: 'var(--brand-accent)', marginBottom: '14px' },
+  mainTitle: { fontSize: 'calc(1.6rem + 1vw)', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 12px 0', letterSpacing: '-0.025em', lineHeight: '1.2' },
+  subTitle: { color: 'var(--text-muted)', margin: 0, fontSize: '0.98rem', maxWidth: '750px', lineHeight: '1.6', fontWeight: '500' },
+  
+  sectionGap: { marginBottom: '36px' },
+  sectionHeading: { fontSize: '0.78rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)', marginBottom: '14px' },
+  
+  verdictPanel: { marginTop: '24px', padding: '24px', borderRadius: '12px', borderLeft: '6px solid', transition: 'all 0.2s ease' },
+  verdictMeta: { fontSize: '0.72rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' },
+  verdictStatus: { margin: '6px 0', fontSize: '1.4rem', fontWeight: '800', letterSpacing: '-0.01em' },
+  verdictDesc: { margin: 0, color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.55', fontWeight: '500' },
+
+  overviewBlock: { backgroundColor: 'var(--bg-panel)', border: '1px solid var(--panel-border)', borderRadius: '12px', padding: '28px', textAlign: 'left' },
+  blockTitle: { fontSize: '1.1rem', fontWeight: '800', color: 'var(--brand-primary)', margin: '0 0 10px 0', letterSpacing: '-0.01em' },
+  blockText: { fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: '1.65', margin: 0, fontWeight: '500' }
 };

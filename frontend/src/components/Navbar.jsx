@@ -1,70 +1,111 @@
-import { useState } from 'react';
-import { Cpu, Menu, X, Globe, BarChart3, ShieldCheck, HelpCircle, FileText } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export default function Navbar({ currentTab, setCurrentTab }) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const navItems = [
-    { id: 'home', label: 'Scan Dashboard', icon: <Globe size={16} /> },
-    { id: 'analytics', label: 'Neural Metrics', icon: <BarChart3 size={16} /> },
-    { id: 'cyberlaws', label: 'Cyber Laws', icon: <ShieldCheck size={16} /> },
-    { id: 'support', label: 'Support & Help', icon: <HelpCircle size={16} /> },
-    { id: 'AboutUs', label: 'AboutUs', icon: <FileText size={16} /> }
+    { id: 'home', label: 'Scan Engine' },
+    { id: 'analytics', label: 'Analytics Matrix' },
+    { id: 'cyberlaws', label: 'Compliance Laws' },
+    { id: 'support', label: 'Support Nodes' },
+    { id: 'about', label: 'About Us' }
   ];
 
+  // Screen resize detect karne ke liye tracker window
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+        setIsOpen(false); // Scale back up hony pr layout lock reset ho jaye
+      }
+    };
+    
+    handleResize(); // Initial setup load execution
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handleTabClick = (id) => {
+    setCurrentTab(id);
+    setIsOpen(false); // Selection hote hi mobile menu overlay auto close ho jaye
+  };
+
   return (
-    <nav style={styles.navbar}>
-      <div style={styles.navBrand} onClick={() => setCurrentTab('home')}>
-        <div style={styles.logoIconContainer}><Cpu size={20} color="#38bdf8" /></div>
-        <span style={styles.logoText}>SECURITY<span style={{ color: '#38bdf8' }}>VAULT</span></span>
-      </div>
-
-      {/* Desktop and Laptop Fluent Links Grid */}
-      <div className="desktop-only" style={styles.desktopNavLinks}>
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            style={{ ...styles.navLinkButton, ...(currentTab === item.id ? styles.navLinkActive : {}) }}
-            onClick={() => setCurrentTab(item.id)}
-          >
-            {item.icon} {item.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Mobile-Only Interactive Trigger Button */}
-      <button className="mobile-toggle" style={styles.mobileMenuToggleButton} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-        {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-      </button>
-
-      {/* Mobile Drawer Menu Layer overlay */}
-      {mobileMenuOpen && (
-        <div className="mobile-only" style={styles.mobileDrawerContainer}>
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              style={{ ...styles.mobileDrawerLink, ...(currentTab === item.id ? styles.mobileDrawerLinkActive : {}) }}
-              onClick={() => { setCurrentTab(item.id); setMobileMenuOpen(false); }}
-            >
-              {item.icon} {item.label}
-            </button>
-          ))}
+    <nav style={styles.navWrapper}>
+      <div style={styles.navInner}>
+        
+        {/* Extreme Left Side: Clean Brand Title */}
+        <div style={styles.brand} onClick={() => handleTabClick('home')}>
+          Anti<span style={{ color: 'var(--brand-accent)' }}>Phish</span>
         </div>
-      )}
+        
+        {/* Extreme Right Side: Hamburger Button (Sirf mobile width par render hoga) */}
+        {isMobile && (
+          <button style={styles.hamburger} onClick={() => setIsOpen(!isOpen)}>
+            <div style={{ ...styles.bar, transform: isOpen ? 'rotate(45deg) translate(5px, 5px)' : 'none' }}></div>
+            <div style={{ ...styles.bar, opacity: isOpen ? 0 : 1 }}></div>
+            <div style={{ ...styles.bar, transform: isOpen ? 'rotate(-45deg) translate(5px, -6px)' : 'none' }}></div>
+          </button>
+        )}
+
+        {/* Dynamic Nav Container: Desktop par continuous right line, Mobile par discrete down panel */}
+        {(!isMobile || isOpen) && (
+          <div style={{
+            ...styles.linksContainer,
+            ...(isMobile ? styles.mobileOverlay : styles.desktopLayout)
+          }}>
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                style={{ 
+                  ...styles.linkBtn, 
+                  ...(currentTab === item.id ? styles.active : {}),
+                  ...(isMobile ? styles.mobileBtn : {})
+                }}
+                onClick={() => handleTabClick(item.id)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        )}
+
+      </div>
     </nav>
   );
 }
 
 const styles = {
-  navbar: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', maxWidth: '1200px', margin: '0 auto', borderBottom: '1px solid #1e293b', position: 'relative', zIndex: 100 },
-  navBrand: { display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' },
-  logoIconContainer: { backgroundColor: 'rgba(14,165,233,0.1)', border: '1px solid rgba(14,165,233,0.2)', padding: '8px', borderRadius: '8px', display: 'flex', alignItems: 'center' },
-  logoText: { fontWeight: '800', fontSize: '1.15rem', letterSpacing: '0.03em', color: '#ffffff' },
-  desktopNavLinks: { display: 'flex', gap: '4px', alignItems: 'center' },
-  navLinkButton: { display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'transparent', border: '1px solid transparent', color: '#94a3b8', padding: '8px 12px', borderRadius: '6px', fontSize: '0.85rem', fontWeight: '600', cursor: 'pointer', transition: 'all 0.15s ease' },
-  navLinkActive: { backgroundColor: '#0f172a', borderColor: '#1e293b', color: '#38bdf8' },
-  mobileMenuToggleButton: { display: 'none', backgroundColor: '#0f172a', border: '1px solid #1e293b', color: '#f8fafc', padding: '8px', borderRadius: '8px', cursor: 'pointer' },
-  mobileDrawerContainer: { position: 'absolute', top: '70px', left: 0, width: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#070a12', borderBottom: '1px solid #1e293b', padding: '12px 20px', gap: '6px', zIndex: 99, boxSizing: 'border-box' },
-  mobileDrawerLink: { display: 'flex', alignItems: 'center', gap: '10px', backgroundColor: 'transparent', border: 'none', color: '#94a3b8', padding: '12px', borderRadius: '8px', fontSize: '0.9rem', width: '100%', textAlign: 'left', cursor: 'pointer' },
-  mobileDrawerLinkActive: { backgroundColor: 'rgba(14,165,233,0.1)', color: '#38bdf8', fontWeight: 'bold' }
+  navWrapper: { width: '100%', backgroundColor: 'var(--bg-panel)', borderBottom: '1px solid var(--panel-border)', position: 'sticky', top: 0, zIndex: 1000 },
+  navInner: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', maxWidth: '1200px', margin: '0 auto', width: '100%', position: 'relative' },
+  brand: { fontWeight: '800', fontSize: '1.4rem', letterSpacing: '-0.01em', cursor: 'pointer', color: 'var(--brand-primary)', userSelect: 'none' },
+  
+  // Base Layout Structure
+  linksContainer: { display: 'flex', gap: '6px' },
+  desktopLayout: { flexDirection: 'row', alignItems: 'center' },
+  
+  // Active state trigger overlays for minimizing screens
+  mobileOverlay: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    flexDirection: 'column',
+    backgroundColor: 'var(--bg-panel)',
+    borderBottom: '1px solid var(--panel-border)',
+    padding: '16px 24px',
+    gap: '10px',
+    boxShadow: '0 10px 15px -3px rgba(0,0,0,0.05)'
+  },
+  
+  linkBtn: { backgroundColor: 'transparent', border: 'none', color: 'var(--text-muted)', padding: '8px 14px', borderRadius: '6px', fontSize: '0.88rem', fontWeight: '600', cursor: 'pointer', transition: 'all 0.15s ease' },
+  mobileBtn: { width: '100%', textAlign: 'left', padding: '12px 16px' },
+  active: { backgroundColor: 'var(--bg-canvas)', color: 'var(--brand-primary)' },
+  
+  // Custom Smooth Mechanical Hamburger UI Setup
+  hamburger: { display: 'flex', flexDirection: 'column', gap: '5px', backgroundColor: 'transparent', border: 'none', cursor: 'pointer', padding: '6px', zIndex: 1001 },
+  bar: { width: '22px', height: '2px', backgroundColor: 'var(--text-main)', transition: 'all 0.2s ease', transformOrigin: 'center' }
 };
