@@ -23,9 +23,9 @@ try:
     if os.path.exists(MPATH) and os.path.exists(EPATH):
         model = joblib.load(MPATH)
         encoder = joblib.load(EPATH)
-        print("\n==================================================")
-        print("[+] SUCCESS: Foolproof Production Server Is Live!")
-        print("==================================================\n")
+        print("\n=============================")
+        print("[+] SUCCESS: Server Is Live!")
+        print("===============================\n")
 except Exception as e:
     print(f"[-] Error loading models: {str(e)}")
 
@@ -42,17 +42,15 @@ def predict():
         if not user_url:
             return jsonify({'error': 'No URL provided', 'status': 'failed'}), 400
             
-        # 1. Agar link bohot chota hai (sirf 3-4 letters ka), toh model galat predict kar sakta hai
         if len(user_url) < 4:
             return jsonify({'prediction': 'Safe', 'status': 'success'})
 
-        # 2. STRICT PHISHING KEYWORDS (Agar yeh words hain toh direct check hoga)
+        # PHISHING KEYWORD CHECK
         phishing_keywords = ['secure-login', 'verify-paypal', 'free-netflix', 'account-update', 'gift-bonus', 'free-tokens']
         if any(keyword in user_url for keyword in phishing_keywords):
             return jsonify({'prediction': 'Phishing', 'status': 'success'})
 
-        # 3. 🛡️ THE MASTER WHITELIST (In keywords par model ko bypass kar ke direct SAFE dega)
-        # Isme aapke bataye huye GPT, Gemini, YouTube aur GIFT University sab added hain!
+        # WHITELIST (In keywords par model ko bypass kar ke direct SAFE dega)
         trusted_keywords = [
             'google', 'facebook', 'github', 'wikipedia', 'gift', 'gift.edu',
             'linkedin', 'microsoft', 'apple', 'youtube', 'gmail', 'yahoo', 
@@ -69,7 +67,7 @@ def predict():
             if any(domain in user_url for domain in trusted_keywords) or is_safe_ext:
                 return jsonify({'prediction': 'Safe', 'status': 'success'})
 
-        # 4. STANDARD PIPELINE EXECUTION (Baki aam links par 95% accuracy wala model chalega)
+        # STANDARD PIPELINE EXECUTION (Baki aam links par 95% accuracy wala model chalega)
         features = encoder.transform([user_url])
         prediction = model.predict(features)[0]  
         
