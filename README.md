@@ -47,15 +47,7 @@ Follow these exact steps from scratch to clone and run this project on any local
     ```Bash
     python train.py
     ```
-    (Wait 15–20 seconds for the [+] SUCCESS confirmation message).
-
-4. Launch the local Flask deployment API server:
-
-    ```Bash
-    python app.py
-    ```
-    
-    (Keep this terminal window running. The server will host locally at http://127.0.0.1:5000).
+    (Wait 15–20 seconds for the [+] SUCCESS confirmation message, then you can close this terminal).
 
 ### Step 2: Frontend UI Setup (React + Vite)
 
@@ -71,10 +63,20 @@ Follow these exact steps from scratch to clone and run this project on any local
     npm install
     ```
 
-3. Run the development server to launch the frontend app interface:
+3. To launch both Backend & Frontend interfaces:
+
+   Execute the following command. This will simultaneously spin up the Python Flask API server and the React Vite development server:
 
    ```Bash
    npm run dev
    ```
-   
-   Click or open the local address outputted in the terminal (usually http://localhost:5173) inside your web browser.
+
+   What will happen next?
+
+   * **Frontend Active:** Your current terminal will host the Vite local network framework running on http://localhost:5173.
+
+   * **Backend Alert:** A new independent terminal window will instantly pop up, initializing the Flask backend deployment on http://127.0.0.1:5000.
+
+   * **Action Required:** Open your browser and navigate to http://localhost:5173 to interact with the Website.
+
+  
