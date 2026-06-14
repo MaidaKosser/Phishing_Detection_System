@@ -12,7 +12,7 @@ export default function ScanInput({ value, onChange, onSubmit, loading, placehol
             style={styles.input} 
           />
           <button type="submit" disabled={loading} style={styles.btn}>
-            {loading ? "Analyzing Vectors..." : "Scan Domain"}
+            {loading ? "Analyzing Vectors" : "Scan Domain"}
           </button>
         </div>
       </form>
