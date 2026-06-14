@@ -1,61 +1,161 @@
 import Card from '../components/Card';
 
 export default function Analytics() {
-  const telemetryData = [
-    { label: 'Mon', total: 70, threats: 15 },
-    { label: 'Tue', total: 95, threats: 24 },
-    { label: 'Wed', total: 120, threats: 12 },
-    { label: 'Thu', total: 150, threats: 45 },
-    { label: 'Fri', total: 110, threats: 18 }
+  // Actual performance metrics parsed exactly from the uploaded comparison chart
+  const modelMetrics = [
+    { metric: 'Accuracy', ml: 0.948, dl: 0.952, percentageML: '94.8%', percentageDL: '95.2%' },
+    { metric: 'Precision', ml: 0.951, dl: 0.936, percentageML: '95.1%', percentageDL: '93.6%' },
+    { metric: 'Recall', ml: 0.891, dl: 0.909, percentageML: '89.1%', percentageDL: '90.9%' }
   ];
 
   return (
-    <div className="animated-node">
-      <header style={{ marginBottom: '36px' }}>
-        <h1 style={{ fontSize: '2.1rem', fontWeight: '800', margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>Platform Telemetry</h1>
-        <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.95rem' }}>Calculated statistical distribution logs of vector evaluations.</p>
+    <div className="animated-node" style={styles.container}>
+      
+      {/* --- PROFESSIONAL HEADING --- */}
+      <header style={styles.headerBlock}>
+        <h1 style={styles.mainTitle}>Model Analytics & Performance Telemetry</h1>
+        <p style={styles.subTitle}>
+          Comparative evaluation logs showcasing Linear Support Vector Machine validation vs Deep MLP Neural Network architecture on 20,000 processed feature spaces.
+        </p>
       </header>
 
-      <div className="fluid-grid" style={{ marginBottom: '32px' }}>
-        <Card title="Total Scans Run" value="14,205" subtext="Aggregated interface strings" />
-        <Card title="Threat Vectors Caught" value="4,102" subtext="Isolated fake hubs" status="danger" />
-        <Card title="Neural Net Accuracy" value="95.2%" subtext="Validated model accuracy" status="safe" />
-        <Card title="Support Vector Matrix" value="94.8%" subtext="Linear validation accuracy" status="safe" />
-      </div>
+      {/* --- EXTENDED 6-BOX PRODUCTION INFRASTRUCTURE --- */}
+      <section style={styles.sectionGap}>
+        <div style={styles.sixGridOverride}>
+          <Card title="Total Dataset Rows" value="80,000" subtext="Stratified 80/20 partition rows split." />
+          <Card title="LinearSVC Accuracy" value="94.8%" subtext="Support Vector Hyperplane validation." status="safe" />
+          <Card title="MLP ANN Accuracy" value="95.2%" subtext="Deep Backpropagation Node validation." status="safe" />
+          <Card title="Feature Space" value="20,000" subtext="Extracted TF-IDF token dimensions." />
+          <Card title="MLP False Safes" value="436 Flags" subtext="Minimon anomaly escape vectors caught." status="danger" />
+          <Card title="Peak Precision" value="95.1%" subtext="Linear engine matrix signature match." status="safe" />
+        </div>
+      </section>
 
-      {/* Clean Premium Light Graph */}
+      {/* --- FRAMEWORK PERFORMANCE COMPARISON CHART --- */}
       <div className="clean-shadow" style={styles.chartPanel}>
-        <div style={styles.chartTitle}>Weekly Log Traffic Distribution</div>
+        <div style={styles.chartHeaderBlock}>
+          <h2 style={styles.chartTitle}>Framework Performance Metric Comparison Chart</h2>
+          <p style={styles.chartDesc}>
+            Empirical metrics extracted from the test partition matrix. Score validation values mapped from range 0.0 to 1.0.
+          </p>
+        </div>
+
+        {/* Dynamic Responsive Bar System Chart */}
         <div style={styles.graphCanvas}>
-          {telemetryData.map((node, i) => (
-            <div key={i} style={styles.graphCol}>
-              <div style={styles.barStack}>
-                <div style={{ ...styles.barScan, height: `${node.total * 1.2}px` }}></div>
-                <div style={{ ...styles.barThreat, height: `${node.threats * 1.2}px` }}></div>
+          
+          {modelMetrics.map((node, i) => (
+            <div key={i} style={styles.metricGroupContainer}>
+              
+              {/* Bars Cluster Side-by-Side */}
+              <div style={styles.barsCluster}>
+                
+                {/* LinearSVC Bar */}
+                <div style={styles.barWrapper}>
+                  <div 
+                    style={{ ...styles.barML, height: `${node.ml * 100}%` }}
+                    title={`LinearSVC: ${node.percentageML}`}
+                  >
+                    <span style={styles.barValueLabel}>{node.percentageML}</span>
+                  </div>
+                </div>
+
+                {/* MLP ANN Bar */}
+                <div style={styles.barWrapper}>
+                  <div 
+                    style={{ ...styles.barDL, height: `${node.dl * 100}%` }}
+                    title={`MLP ANN: ${node.percentageDL}`}
+                  >
+                    <span style={styles.barValueLabel}>{node.percentageDL}</span>
+                  </div>
+                </div>
+
               </div>
-              <div style={styles.label}>{node.label}</div>
+
+              {/* Bottom Label Axis */}
+              <div style={styles.xAxisLabel}>{node.metric}</div>
             </div>
           ))}
+
         </div>
+
+        {/* Professional Controlled Legend Setup */}
         <div style={styles.legendWrapper}>
-          <div style={styles.legend}><div style={{ ...styles.dot, backgroundColor: 'var(--brand-accent)' }}></div> Total Inputs Scanned</div>
-          <div style={styles.legend}><div style={{ ...styles.dot, backgroundColor: 'var(--matrix-red)' }}></div> Isolated Threat Strings</div>
+          <div style={styles.legendItem}>
+            <div style={{ ...styles.colorIndicator, backgroundColor: '#7dd3fc' }}></div>
+            <span style={styles.legendText}>LinearSVC (ML Model)</span>
+          </div>
+          <div style={styles.legendItem}>
+            <div style={{ ...styles.colorIndicator, backgroundColor: '#ff7a45' }}></div>
+            <span style={styles.legendText}>MLP ANN (DL Model)</span>
+          </div>
         </div>
       </div>
+
     </div>
   );
 }
 
 const styles = {
-  chartPanel: { backgroundColor: 'var(--bg-panel)', border: '1px solid var(--panel-border)', borderRadius: '12px', padding: '24px' },
-  chartTitle: { fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '32px', letterSpacing: '0.05em' },
-  graphCanvas: { display: 'flex', justifyContent: 'space-around', alignItems: 'flex-end', height: '220px', borderBottom: '1px solid var(--panel-border)', paddingBottom: '8px' },
-  graphCol: { display: 'flex', flexDirection: 'column', alignItems: 'center', width: '50px' },
-  barStack: { display: 'flex', alignItems: 'flex-end', gap: '8px', height: '180px' },
-  barScan: { width: '16px', backgroundColor: 'var(--brand-accent)', borderRadius: '4px 4px 0 0' },
-  barThreat: { width: '16px', backgroundColor: 'var(--matrix-red)', borderRadius: '4px 4px 0 0' },
-  label: { fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '8px', fontWeight: '600' },
-  legendWrapper: { display: 'flex', gap: '24px', marginTop: '24px', justifyContent: 'center' },
-  legend: { display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '600' },
-  dot: { width: '8px', height: '8px', borderRadius: '50%' }
+  container: { paddingBottom: '40px', textAlign: 'left' },
+  headerBlock: { marginBottom: '32px' },
+  mainTitle: { fontSize: 'calc(1.6rem + 1.2vw)', fontWeight: '800', color: 'var(--text-main, #0f172a)', margin: '0 0 12px 0', letterSpacing: '-0.025em' },
+  subTitle: { color: 'var(--text-muted, #475569)', margin: 0, fontSize: 'calc(0.96rem + 0.1vw)', lineHeight: '1.65', maxWidth: '850px', fontWeight: '500' },
+  
+  sectionGap: { marginBottom: '40px' },
+  // 6 Boxes dynamic layout distribution handling cleanly
+  sixGridOverride: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' },
+  
+  // Chart Panel Structure
+  chartPanel: { backgroundColor: 'var(--bg-panel, #ffffff)', border: '1px solid var(--panel-border, #e2e8f0)', borderRadius: '12px', padding: '32px' },
+  chartHeaderBlock: { marginBottom: '32px' },
+  chartTitle: { fontSize: 'calc(1.1rem + 0.15vw)', fontWeight: '800', color: 'var(--text-main, #0f172a)', margin: '0 0 6px 0', letterSpacing: '-0.01em' },
+  chartDesc: { fontSize: 'calc(0.9rem + 0.05vw)', color: 'var(--text-muted, #475569)', margin: 0, lineHeight: '1.5', fontWeight: '500' },
+  
+  // Custom Dynamic Graph Layout (Matching image_391521 dimensions closely)
+  graphCanvas: { 
+    display: 'flex', 
+    justifyContent: 'space-around', 
+    alignItems: 'flex-end', 
+    height: '320px', 
+    borderBottom: '2px solid var(--panel-border, #e2e8f0)', 
+    paddingBottom: '4px',
+    paddingLeft: '20px',
+    paddingRight: '20px',
+    marginTop: '20px'
+  },
+  metricGroupContainer: { display: 'flex', flexDirection: 'column', alignItems: 'center', width: '30%', height: '100%', justifyContent: 'flex-end' },
+  barsCluster: { display: 'flex', alignItems: 'flex-end', gap: '14px', height: '280px', width: '100%', justifyContent: 'center' },
+  barWrapper: { height: '100%', display: 'flex', alignItems: 'flex-end', width: 'calc(35px + 1.5vw)' },
+  
+  // Bars Core Architecture with Premium Color Schemes
+  barML: { 
+    width: '100%', 
+    backgroundColor: '#7dd3fc', // Sky Blue variant from your comparison logs
+    borderRadius: '4px 4px 0 0', 
+    position: 'relative',
+    transition: 'all 0.3s ease',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-start'
+  },
+  barDL: { 
+    width: '100%', 
+    backgroundColor: '#ff7a45', // Coral Orange variant from your comparison logs
+    borderRadius: '4px 4px 0 0', 
+    position: 'relative',
+    transition: 'all 0.3s ease',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-start'
+  },
+  
+  // Text Labels Over the Bars
+  barValueLabel: { position: 'absolute', top: '-26px', fontSize: 'calc(0.8rem + 0.05vw)', fontWeight: '700', color: 'var(--text-main, #0f172a)' },
+  xAxisLabel: { fontSize: 'calc(0.94rem + 0.05vw)', color: 'var(--text-main, #0f172a)', marginTop: '14px', fontWeight: '700', letterSpacing: '-0.01em' },
+  
+  // Professional Legends System
+  legendWrapper: { display: 'flex', gap: '32px', marginTop: '28px', justifyContent: 'center', flexWrap: 'wrap' },
+  legendItem: { display: 'flex', alignItems: 'center', gap: '10px' },
+  colorIndicator: { width: '20px', height: '12px', borderRadius: '3px' },
+  legendText: { fontSize: 'calc(0.9rem + 0.05vw)', color: 'var(--text-muted, #475569)', fontWeight: '600' }
 };
