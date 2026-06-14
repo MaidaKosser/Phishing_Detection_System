@@ -1,11 +1,11 @@
 import Card from '../components/Card';
 
 export default function Analytics() {
-  // Actual performance metrics parsed exactly from the uploaded comparison chart
+  // Original performance metrics parsed exactly from your classification logs
   const modelMetrics = [
-    { metric: 'Accuracy', ml: 0.948, dl: 0.952, percentageML: '94.8%', percentageDL: '95.2%' },
-    { metric: 'Precision', ml: 0.951, dl: 0.936, percentageML: '95.1%', percentageDL: '93.6%' },
-    { metric: 'Recall', ml: 0.891, dl: 0.909, percentageML: '89.1%', percentageDL: '90.9%' }
+    { metric: 'Accuracy', ml: 0.948, dl: 0.950, percentageML: '94.8%', percentageDL: '95.0%' },
+    { metric: 'Precision', ml: 0.951, dl: 0.930, percentageML: '95.1%', percentageDL: '93.0%' },
+    { metric: 'Recall', ml: 0.891, dl: 0.910, percentageML: '89.1%', percentageDL: '91.0%' }
   ];
 
   return (
@@ -24,9 +24,9 @@ export default function Analytics() {
         <div style={styles.sixGridOverride}>
           <Card title="Total Dataset Rows" value="80,000" subtext="Stratified 80/20 partition rows split." />
           <Card title="LinearSVC Accuracy" value="94.8%" subtext="Support Vector Hyperplane validation." status="safe" />
-          <Card title="MLP ANN Accuracy" value="95.2%" subtext="Deep Backpropagation Node validation." status="safe" />
+          <Card title="MLP ANN Accuracy" value="95.0%" subtext="Deep Backpropagation Node validation." status="safe" />
           <Card title="Feature Space" value="20,000" subtext="Extracted TF-IDF token dimensions." />
-          <Card title="MLP False Safes" value="436 Flags" subtext="Minimon anomaly escape vectors caught." status="danger" />
+          <Card title="Testing Samples" value="16,000" subtext="Total evaluation support log size." />
           <Card title="Peak Precision" value="95.1%" subtext="Linear engine matrix signature match." status="safe" />
         </div>
       </section>
@@ -102,16 +102,13 @@ const styles = {
   subTitle: { color: 'var(--text-muted, #475569)', margin: 0, fontSize: 'calc(0.96rem + 0.1vw)', lineHeight: '1.65', maxWidth: '850px', fontWeight: '500' },
   
   sectionGap: { marginBottom: '40px' },
-  // 6 Boxes dynamic layout distribution handling cleanly
   sixGridOverride: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' },
   
-  // Chart Panel Structure
   chartPanel: { backgroundColor: 'var(--bg-panel, #ffffff)', border: '1px solid var(--panel-border, #e2e8f0)', borderRadius: '12px', padding: '32px' },
   chartHeaderBlock: { marginBottom: '32px' },
   chartTitle: { fontSize: 'calc(1.1rem + 0.15vw)', fontWeight: '800', color: 'var(--text-main, #0f172a)', margin: '0 0 6px 0', letterSpacing: '-0.01em' },
   chartDesc: { fontSize: 'calc(0.9rem + 0.05vw)', color: 'var(--text-muted, #475569)', margin: 0, lineHeight: '1.5', fontWeight: '500' },
   
-  // Custom Dynamic Graph Layout (Matching image_391521 dimensions closely)
   graphCanvas: { 
     display: 'flex', 
     justifyContent: 'space-around', 
@@ -127,10 +124,9 @@ const styles = {
   barsCluster: { display: 'flex', alignItems: 'flex-end', gap: '14px', height: '280px', width: '100%', justifyContent: 'center' },
   barWrapper: { height: '100%', display: 'flex', alignItems: 'flex-end', width: 'calc(35px + 1.5vw)' },
   
-  // Bars Core Architecture with Premium Color Schemes
   barML: { 
     width: '100%', 
-    backgroundColor: '#7dd3fc', // Sky Blue variant from your comparison logs
+    backgroundColor: '#7dd3fc', 
     borderRadius: '4px 4px 0 0', 
     position: 'relative',
     transition: 'all 0.3s ease',
@@ -140,7 +136,7 @@ const styles = {
   },
   barDL: { 
     width: '100%', 
-    backgroundColor: '#ff7a45', // Coral Orange variant from your comparison logs
+    backgroundColor: '#ff7a45', 
     borderRadius: '4px 4px 0 0', 
     position: 'relative',
     transition: 'all 0.3s ease',
@@ -149,11 +145,9 @@ const styles = {
     alignItems: 'flex-start'
   },
   
-  // Text Labels Over the Bars
   barValueLabel: { position: 'absolute', top: '-26px', fontSize: 'calc(0.8rem + 0.05vw)', fontWeight: '700', color: 'var(--text-main, #0f172a)' },
   xAxisLabel: { fontSize: 'calc(0.94rem + 0.05vw)', color: 'var(--text-main, #0f172a)', marginTop: '14px', fontWeight: '700', letterSpacing: '-0.01em' },
   
-  // Professional Legends System
   legendWrapper: { display: 'flex', gap: '32px', marginTop: '28px', justifyContent: 'center', flexWrap: 'wrap' },
   legendItem: { display: 'flex', alignItems: 'center', gap: '10px' },
   colorIndicator: { width: '20px', height: '12px', borderRadius: '3px' },
