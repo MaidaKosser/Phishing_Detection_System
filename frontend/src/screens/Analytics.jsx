@@ -79,7 +79,7 @@ export default function Analytics() {
       
       {/* --- PROFESSIONAL HEADING --- */}
       <header style={styles.headerBlock}>
-        <h1 style={styles.mainTitle}>Model Analytics & Performance Telemetry</h1>
+        <h1 style={styles.mainTitle}>Model Analytics</h1>
         <p style={styles.subTitle}>
           Comparative evaluation logs showcasing traditional machine learning vs Deep MLP Neural Network architecture on processed feature spaces.
         </p>
@@ -169,7 +169,7 @@ export default function Analytics() {
 const styles = {
   container: { paddingBottom: '60px', maxWidth: '1650px', margin: '0 auto', padding: '0 24px', textAlign: 'left' },
   headerBlock: { marginBottom: '44px', marginTop: '36px' },
-  mainTitle: { fontSize: 'calc(2.2rem + 1.2vw)', fontWeight: '800', color: 'var(--text-main, #0f172a)', margin: '0 0 14px 0', letterSpacing: '-0.025em', lineHeight: '1.2' },
+  mainTitle: { fontSize: 'calc(2.2rem)', fontWeight: '800', color: 'var(--text-main, #0f172a)', margin: '0 0 14px 0', letterSpacing: '-0.025em', lineHeight: '1.2' },
   subTitle: { color: 'var(--text-muted, #475569)', margin: 0, fontSize: 'calc(1.15rem + 0.1vw)', lineHeight: '1.7', maxWidth: '1050px', fontWeight: '500' },
   
   sectionGap: { marginBottom: '52px' },
