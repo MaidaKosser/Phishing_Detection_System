@@ -1,5 +1,11 @@
 import joblib
 import os
+import re
+
+# Custom tokenizer function added back to satisfy scikit-learn unpickling serialization
+def clean_url(url_text):
+    words = re.split(r'[/-_.\?=\s]', str(url_text))
+    return [w for w in words if len(w) > 0]
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MPATH = os.path.join(BASE_DIR, 'models', 'phishing_dl_model.pkl')
@@ -15,8 +21,9 @@ if not os.path.exists(MPATH) or not os.path.exists(EPATH):
     exit(1)
 
 try:
-    model = joblib.load(MPATH)
+    # Now it will load successfully without any attribute errors
     encoder = joblib.load(EPATH)
+    model = joblib.load(MPATH)
     print("[+] SUCCESS: Character-level weights parsed to system RAM successfully!\n")
 except Exception as e:
     print(f"[-] Loading Error: {str(e)}")
