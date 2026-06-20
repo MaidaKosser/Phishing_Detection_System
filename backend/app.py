@@ -16,49 +16,83 @@ def clean_url(url_text):
     return [w for w in words if len(w) > 0]
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MPATH = os.path.join(BASE_DIR, 'models', 'phishing_dl_model.pkl')
-EPATH = os.path.join(BASE_DIR, 'models', 'tfidf_encoder.pkl')
+MODELS_DIR = os.path.join(BASE_DIR, 'models')
+EPATH = os.path.join(MODELS_DIR, 'tfidf_encoder.pkl')
 
-model = None
+# Dictionary to manage all trained binary weights seamlessly
+model_paths = {
+    'mlp': os.path.join(MODELS_DIR, 'phishing_dl_model.pkl'),
+    'logistic_reg': os.path.join(MODELS_DIR, 'logistic_reg_model.pkl'),
+    'linearsvc': os.path.join(MODELS_DIR, 'linearsvc_model.pkl'),
+    'random_forest': os.path.join(MODELS_DIR, 'random_forest_model.pkl')
+}
+
+loaded_models = {}
 encoder = None
 
 try:
-    if os.path.exists(MPATH) and os.path.exists(EPATH):
-        # clean_url defined above ensures joblib deserializes seamlessly now
+    # 1. Load Global Master Feature Extractor
+    if os.path.exists(EPATH):
         encoder = joblib.load(EPATH)
-        model = joblib.load(MPATH)
         print("\n=======================================================")
-        print("[+] SUCCESS: Pure AI Character-Wise Server Is Live!")
-        print("=======================================================\n")
+        print("[+] SUCCESS: Master TF-IDF Encoder Parsed Successfully.")
     else:
-        print("\n[-] ERROR: Models missing in 'models/' directory!\n")
+        print("\n[-] CRITICAL ERROR: tfidf_encoder.pkl is missing!")
+
+    # 2. Load All Available Models into RAM Memory
+    print("🔄 Initializing Multi-Model Engine Suite...")
+    for model_key, path in model_paths.items():
+        if os.path.exists(path):
+            loaded_models[model_key] = joblib.load(path)
+            print(f"    -> [LOADED]: {model_key} model mapped successfully.")
+        else:
+            print(f"    -> [MISSING]: {model_key} model binary wrapper not found.")
+            
+    print("[+] SUCCESS: Multi-Model AI Routing Server Is Live!")
+    print("=======================================================\n")
+
 except Exception as e:
-    print(f"[-] Error loading character models: {str(e)}")
+    print(f"[-] Error loading system binaries: {str(e)}")
+
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    global model, encoder
-    if model is None or encoder is None:
-        return jsonify({'error': 'Backend models are not initialized.', 'status': 'failed'}), 500
-        
+    global loaded_models, encoder
+    
     try:
-        data = request.get_json()
+        data = request.get_json() or {}
         user_url = str(data.get('url', '')).lower().strip()
         
-        # Guard rails for empty or incomplete payloads
+        # Frontend selection capability (Falls back to 'mlp' as production standard)
+        selected_model = str(data.get('model_type', 'mlp')).lower().strip()
+        
+        # Guard rails for empty payloads
         if not user_url:
             return jsonify({'error': 'No URL provided', 'status': 'failed'}), 400
             
         if len(user_url) < 4:
-            return jsonify({'prediction': 'Safe', 'status': 'success'})
+            return jsonify({'prediction': 'Safe', 'status': 'success', 'model_used': selected_model})
 
-        # PURE CHARACTER-LEVEL PREDICTION BOUNDARY LAYER
+        # Ensure encoder and at least the fallback model exist
+        if encoder is None or not loaded_models:
+            return jsonify({'error': 'Backend models are not initialized or missing.', 'status': 'failed'}), 500
+
+        # Dynamic fallback if requested model isn't compiled yet
+        if selected_model not in loaded_models:
+            selected_model = list(loaded_models.keys())[0] # Picks whatever is available
+
+        # PURE AI CHARACTER-LEVEL PREDICTION BOUNDARY LAYER
         features = encoder.transform([user_url])
-        prediction = model.predict(features)[0]  
+        prediction = loaded_models[selected_model].predict(features)[0]  
         
         # Binary target decoding (1 = Phishing, 0 = Safe)
         result = "Phishing" if prediction == 1 else "Safe"
-        return jsonify({'prediction': result, 'status': 'success'})
+        
+        return jsonify({
+            'prediction': result, 
+            'status': 'success',
+            'model_used': selected_model
+        })
         
     except Exception as e:
         return jsonify({'error': f"Runtime internal error: {str(e)}", 'status': 'failed'}), 500
