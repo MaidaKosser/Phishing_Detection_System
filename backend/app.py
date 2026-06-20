@@ -2,10 +2,18 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import joblib
 import os
+import re
 
 app = Flask(__name__)
 # Enable Cross-Origin Resource Sharing for React Frontend integration
 CORS(app)
+
+# ====================================================================
+# CUSTOM TOKENIZER (REQUIRED FOR UNPICKLING TF-IDF ENCODER)
+# ====================================================================
+def clean_url(url_text):
+    words = re.split(r'[/-_.\?=\s]', str(url_text))
+    return [w for w in words if len(w) > 0]
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MPATH = os.path.join(BASE_DIR, 'models', 'phishing_dl_model.pkl')
@@ -16,9 +24,9 @@ encoder = None
 
 try:
     if os.path.exists(MPATH) and os.path.exists(EPATH):
-        # Character-level binaries don't require external tokenizers before deserialization
-        model = joblib.load(MPATH)
+        # clean_url defined above ensures joblib deserializes seamlessly now
         encoder = joblib.load(EPATH)
+        model = joblib.load(MPATH)
         print("\n=======================================================")
         print("[+] SUCCESS: Pure AI Character-Wise Server Is Live!")
         print("=======================================================\n")
@@ -45,7 +53,6 @@ def predict():
             return jsonify({'prediction': 'Safe', 'status': 'success'})
 
         # PURE CHARACTER-LEVEL PREDICTION BOUNDARY LAYER
-        # The character-level matrices evaluate character sequences (sub-strings) natively
         features = encoder.transform([user_url])
         prediction = model.predict(features)[0]  
         
