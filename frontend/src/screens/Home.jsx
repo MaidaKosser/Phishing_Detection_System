@@ -29,10 +29,10 @@ export default function Home() {
   };
 
   const comparisonMetrics = [
-    { name: 'Validation Accuracy', ml: '94.80%', dl: '95.20%' },
-    { name: 'Feature Space Dimension', ml: '20,000 Features', dl: '20,000 Features' },
-    { name: 'Token Preprocessing', ml: 'TF-IDF Regex Split', dl: 'TF-IDF Regex Split' },
-    { name: 'Hidden Nodes Layout', ml: 'N/A (Linear)', dl: 'Dense(64) -> Dense(32)' },
+    { name: 'Validation Accuracy', logReg: '95.5%', svc: '96.4%', rf: '84.8%', mlp: '97.0%' },
+    { name: 'Precision Score', logReg: '95.1%', svc: '95.2%', rf: '98.2%', mlp: '94.9%' },
+    { name: 'Recall (Catch Rate)', logReg: '89.5%', svc: '92.7%', rf: '50.3%', mlp: '95.0%' },
+    { name: 'Feature Strategy', logReg: 'Char-Ngram', svc: 'Char-Ngram', rf: 'Char-Ngram', mlp: 'Char-Ngram' },
   ];
 
   return (
@@ -41,21 +41,24 @@ export default function Home() {
       {/* --- HERO HEADER SECTION --- */}
       <header style={styles.headerBlock}>
         <h1 style={styles.mainTitle}>
-          Phishing Detection System
+          Phishing Website Detection System
         </h1>
         <p style={styles.subTitle}>
-          An enterprise full-stack gateway comparing Linear Support Vector Classification against Deep Artificial Neural Networks to isolate deceptive domains instantly.
+          An enterprise gateway benchmarking traditional Machine Learning classifiers against Deep Artificial Neural Networks using character sequence mutations.
         </p>
       </header>
 
       {/* --- LIVE INTUITIVE SCANNING TERMINAL --- */}
       <section style={styles.sectionGap}>
+        <div style={{ fontSize: '24px', fontWeight: '700', marginBottom: '12px', color: 'var(--text-main)' }}>
+          URL Scan Console
+        </div>
         <ScanInput 
           value={url} 
           onChange={(e) => setUrl(e.target.value)} 
           onSubmit={handleScan} 
           loading={loading} 
-          label="Enter the URL to check whether it's safe or not:" 
+          label="Enter the URL to verify connection safety boundaries:" 
           placeholder="www.google.com" 
         />
 
@@ -74,137 +77,199 @@ export default function Home() {
             </h2>
             <p style={styles.verdictDesc}>
               {result.toLowerCase() === 'safe' 
-                ? "The structural components of the URL cleared the neural classification layer boundaries safely." 
-                : "Warning: High character entropy detected. The signature matches active malicious patterns parsed inside our network training batch."
+                ? "The structural components cleared the character-level neural classification layer boundaries safely." 
+                : "Warning: High token entropy anomaly detected. Sub-string slices match active domain spoofing footprints."
               }
             </p>
           </div>
         )}
       </section>
 
-      {/* --- COMPREHENSIVE 6-GRID STATE INDICATORS --- */}
+       {/* --- PRODUCTION ENGINE STATE INDICATORS --- */}
       <section style={styles.sectionGap}>
-        <div style={styles.sectionHeading}>PRODUCTION ENGINE STATE INDICATORS (6-NODE INFRASTRUCTURE)</div>
-        <div className="fluid-grid" style={styles.sixGridOverride}>
-          <Card title="Active Live Model" value="MLP Classifier" subtext="Multi-Layer Perceptron neural engine routing system queries." status="safe" />
-          <Card title="Model Optimization" value="Stratified Sample" subtext="Balanced 80,000 rows split smoothly out of 550,000 master Kaggle rows." status="safe" />
-          <Card title="Text Vectorization" value="20,000 Features" subtext="Calculated token dimensions built using dynamic regex filters." />
+        <div style={styles.sectionHeading}>PRODUCTION ENGINE STATE INDICATORS</div>
+        <div style={styles.sixGridOverride}>
+          <Card title="Active Live Model" value="MLP Classifier" subtext="Multi-Layer Perceptron neural system routing queries." status="safe" />
+          <Card title="Model Optimization" value="Stratified Sample" subtext="Balanced 280,000 dataset rows processed smoothly." status="safe" />
+          <Card title="Text Vectorization" value="20,000 Features" subtext="Calculated vector dimensions built out of explicit character sub-string arrays." />
           <Card title="Backend Connect" value="Flask API Layer" subtext="Interconnects web inputs directly to deep learning storage binaries." status="safe" />
           <Card title="Frontend Layer" value="React 18 SPA" subtext="Component-driven modular interface with atomic state layout routing." status="safe" />
-          <Card title="Tokenizer Matrix" value="Custom Regex Token" subtext="Splits punctuation paths to evaluate domain character entropy weights." />
+          <Card title="Tokenizer Matrix" value="Character Level N-Gram" subtext="Analyzes deep structural char clusters natively to expose spoofed brands." status="safe" />
         </div>
       </section>
 
-      {/* --- NOTEBOOK DATA INTERPRETATION METRICS --- */}
-      <section style={styles.dualGrid}>
-        
-        {/* Left Side: Dynamic Pipeline Performance Matrix */}
-        <div className="clean-shadow" style={styles.dataBlock}>
-          <h3 style={styles.blockTitle}>Model Architecture Comparison</h3>
-          <p style={styles.blockText}>
-            Our experimental phase evaluated two diverse statistical architectures inside Google Colab using a <strong>balanced 80/20 data partition split</strong>. Below is the strict verification log:
-          </p>
-          
-          <table style={styles.metricTable}>
-            <thead>
-              <tr style={styles.tableHeaderRow}>
-                <th style={styles.tableTh}>Pipeline Metric</th>
-                <th style={styles.tableTh}>LinearSVC (ML)</th>
-                <th style={styles.tableTh}>MLP ANN (DL)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {comparisonMetrics.map((row, index) => (
-                <tr key={index} style={index % 2 === 0 ? styles.tableEvenRow : styles.tableOddRow}>
-                  <td style={styles.tableTd}><strong>{row.name}</strong></td>
-                  <td style={{ ...styles.tableTd, color: 'var(--brand-primary)' }}>{row.ml}</td>
-                  <td style={{ ...styles.tableTd, color: 'var(--brand-accent)', fontWeight: '700' }}>{row.dl}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+       {/* --- BOTTOM FULL COMPARISON METRICS SUMMARY TABLE --- */}
+      <section style={styles.sectionGap}>
+        <div className="clean-shadow" style={styles.glassBlock}>
+          <div>
+            <div style={styles.badgeLabel}>Performance Summary</div>
+            <h3 style={styles.blockTitle}>Core Pipeline Metrics Comparison</h3>
+            <p style={styles.blockText}>
+              Verification logs across standard data slices using an <strong>80/20 train-test partition scheme</strong> inside Google Colab environment:
+            </p>
+            
+            <div style={styles.tableResponsiveWrapper}>
+              <table style={styles.metricTable}>
+                <thead>
+                  <tr style={styles.tableHeaderRow}>
+                    <th style={styles.tableTh}>Pipeline Metric</th>
+                    <th style={styles.tableTh}>Logistic Regression</th>
+                    <th style={styles.tableTh}>LinearSVC</th>
+                    <th style={styles.tableTh}>Random Forest</th>
+                    <th style={styles.tableTh_Active}>MLP Neural Net (DL)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {comparisonMetrics.map((row, index) => (
+                    <tr key={index} style={index % 2 === 0 ? styles.tableEvenRow : styles.tableOddRow}>
+                      <td style={styles.tableTd}><strong>{row.name}</strong></td>
+                      <td style={styles.tableTd}>{row.logReg}</td>
+                      <td style={styles.tableTd}>{row.svc}</td>
+                      <td style={styles.tableTd}>{row.rf}</td>
+                      <td style={styles.tableTd_ActiveContent}>{row.mlp}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
 
           <div style={styles.selectionAlert}>
-            <strong>Production Choice:</strong> Humne backend pipeline execution ke liye final <strong>`MLP Neural Network` (.pkl)</strong> ko save karke deploy kiya hai. Yeh model simple hyperplane structures ke bajaye <code style={styles.inlineCode}>ReLU</code> hidden node backpropagation parameters par perform karta hai, jo deep character structures ko tightly map karta hai.
+            <strong>Active Production Selection:</strong> As proven above, the <code>MLP Neural Network (97.0% Accuracy)</code> controls risk margins safely, minimizing critical False Safe slips down to only 837 cases compared to traditional classifiers.
           </div>
         </div>
-
-        {/* Right Side: Verified Original Heatmap Layout Graphs Data */}
-        <div className="clean-shadow" style={styles.dataBlock}>
-          <h3 style={styles.blockTitle}>Notebook Heatmaps & Confusion Matrix Results</h3>
-          <p style={styles.blockText}>
-            Mathematical representation of exact validation hits and false anomalies extracted directly from your verified Google Colab outputs (Blues & Oranges tracking heatmaps):
-          </p>
-
-          <div style={styles.chartFlex}>
-            
-            {/* Heatmap Section 1: LinearSVC (Verified Blues Matrix Grid) */}
-            <div style={styles.miniChartContainer}>
-              <div style={styles.chartHeader}>LinearSVC (ML Blues Heatmap Data)</div>
-              
-              <div style={styles.heatmapMatrixGrid}>
-                <div style={{ ...styles.matrixCell, backgroundColor: '#eff6ff', color: '#1e40af' }}>
-                  <span style={styles.cellLabel}>True Safe (TN)</span>
-                  <strong>10,972</strong>
-                </div>
-                <div style={{ ...styles.matrixCell, backgroundColor: '#fef2f2', color: '#991b1b' }}>
-                  <span style={styles.cellLabel}>False Phish (FP)</span>
-                  <strong>228</strong>
-                </div>
-                <div style={{ ...styles.matrixCell, backgroundColor: '#fef2f2', color: '#991b1b' }}>
-                  <span style={styles.cellLabel}>False Safe (FN)</span>
-                  <strong>525</strong>
-                </div>
-                <div style={{ ...styles.matrixCell, backgroundColor: '#dbeafe', color: '#1e40af' }}>
-                  <span style={styles.cellLabel}>True Phish (TP)</span>
-                  <strong>4,275</strong>
-                </div>
+      </section>
+      {/* --- CONFUSION MATRICES LEVEL 1: TWO SIDE-BY-SIDE CARDS --- */}
+      <section style={styles.sectionGridGap}>
+        <div style={styles.sectionHeading}>DETAILED VALIDATION MATRIX BREAKDOWN (PART 1)</div>
+        <div style={styles.matrixSideBySideRow}>
+          
+          {/* MODEL 1: LOGISTIC REGRESSION */}
+          <div className="clean-shadow" style={styles.largeMatrixContainer}>
+            <div style={styles.matrixHeaderBlock}>
+              <h3 style={styles.matrixTitle}>LOGISTIC REGRESSION (ML) MATRIX</h3>
+              <p style={styles.matrixSubText}>Traditional linear statistical character vector mapping validation bounds.</p>
+            </div>
+            <div style={styles.largeMatrixHeatmapGrid}>
+              <div style={{ ...styles.largeMatrixCell, backgroundColor: '#1e3a8a', color: '#ffffff' }}>
+                <span style={styles.largeCellLabel}>TRUE SAFE (TN)</span><strong>38,420</strong>
               </div>
-
-              <div style={styles.graphRow}>
-                <div style={styles.graphLabel}>True Matches</div>
-                <div style={styles.barWrapper}><div style={{ ...styles.filledBar, width: '94.8%', backgroundColor: '#2563eb' }}></div></div>
-                <div style={styles.graphPercent}>94.8%</div>
+              <div style={{ ...styles.largeMatrixCell, backgroundColor: '#dbeafe', color: '#1e3a8a' }}>
+                <span style={styles.largeCellLabel}>FALSE PHISH (FP)</span><strong>780</strong>
+              </div>
+              <div style={{ ...styles.largeMatrixCell, backgroundColor: '#fef2f2', color: '#991b1b' }}>
+                <span style={styles.largeCellLabel}>FALSE SAFE (FN)</span><strong>1,763</strong>
+              </div>
+              <div style={{ ...styles.largeMatrixCell, backgroundColor: '#2563eb', color: '#ffffff' }}>
+                <span style={styles.largeCellLabel}>TRUE PHISH (TP)</span><strong>15,037</strong>
               </div>
             </div>
-
-            {/* Heatmap Section 2: MLP Neural Network (Verified Oranges Matrix Grid) */}
-            <div style={styles.miniChartContainer}>
-              <div style={styles.chartHeader}>MLP Neural Network (DL Oranges Heatmap Data)</div>
-              
-              <div style={styles.heatmapMatrixGrid}>
-                <div style={{ ...styles.matrixCell, backgroundColor: '#fff7ed', color: '#c2410c' }}>
-                  <span style={styles.cellLabel}>True Safe (TN)</span>
-                  <strong>10,895</strong>
-                </div>
-                <div style={{ ...styles.matrixCell, backgroundColor: '#fef2f2', color: '#991b1b' }}>
-                  <span style={styles.cellLabel}>False Phish (FP)</span>
-                  <strong>305</strong>
-                </div>
-                <div style={{ ...styles.matrixCell, backgroundColor: '#fef2f2', color: '#991b1b' }}>
-                  <span style={styles.cellLabel}>False Safe (FN)</span>
-                  <strong>436</strong>
-                </div>
-                <div style={{ ...styles.matrixCell, backgroundColor: '#ffedd5', color: '#c2410c' }}>
-                  <span style={styles.cellLabel}>True Phish (TP)</span>
-                  <strong>4,364</strong>
-                </div>
+            <div style={styles.progressionMatchRow}>
+              <span style={styles.progressionLabel}>True Matches</span>
+              <div style={styles.largeBarWrapper}>
+                <div style={{ ...styles.largeFilledBar, width: '95.5%', backgroundColor: '#2563eb' }}></div>
               </div>
-
-              <div style={styles.graphRow}>
-                <div style={styles.graphLabel}>True Matches</div>
-                <div style={styles.barWrapper}><div style={{ ...styles.filledBar, width: '95.2%', backgroundColor: '#ea580c' }}></div></div>
-                <div style={styles.graphPercent}>95.2%</div>
-              </div>
+              <span style={styles.progressionPercent}>95.5%</span>
             </div>
-
           </div>
 
-          <p style={{ ...styles.blockText, marginTop: '16px' }}>
-            * As proven in the notebook execution, the MLP matrix shows a lower False Safe rate (**436 vs 525**), proving its better sensitivity for structural zero-day attacks.
-          </p>
-        </div>
+          {/* MODEL 2: LINEAR SVC */}
+          <div className="clean-shadow" style={styles.largeMatrixContainer}>
+            <div style={styles.matrixHeaderBlock}>
+              <h3 style={styles.matrixTitle}>LINEAR SVC MATRIX</h3>
+              <p style={styles.matrixSubText}>Support Vector Machine boundary maximizer processing sub-string coordinates.</p>
+            </div>
+            <div style={styles.largeMatrixHeatmapGrid}>
+              <div style={{ ...styles.largeMatrixCell, backgroundColor: '#581c87', color: '#ffffff' }}>
+                <span style={styles.largeCellLabel}>TRUE SAFE (TN)</span><strong>38,412</strong>
+              </div>
+              <div style={{ ...styles.largeMatrixCell, backgroundColor: '#f3e8ff', color: '#581c87' }}>
+                <span style={styles.largeCellLabel}>FALSE PHISH (FP)</span><strong>788</strong>
+              </div>
+              <div style={{ ...styles.largeMatrixCell, backgroundColor: '#fef2f2', color: '#991b1b' }}>
+                <span style={styles.largeCellLabel}>FALSE SAFE (FN)</span><strong>1,225</strong>
+              </div>
+              <div style={{ ...styles.largeMatrixCell, backgroundColor: '#7c3aed', color: '#ffffff' }}>
+                <span style={styles.largeCellLabel}>TRUE PHISH (TP)</span><strong>15,575</strong>
+              </div>
+            </div>
+            <div style={styles.progressionMatchRow}>
+              <span style={styles.progressionLabel}>True Matches</span>
+              <div style={styles.largeBarWrapper}>
+                <div style={{ ...styles.largeFilledBar, width: '96.4%', backgroundColor: '#7c3aed' }}></div>
+              </div>
+              <span style={styles.progressionPercent}>96.4%</span>
+            </div>
+          </div>
 
+        </div>
+      </section>
+
+      {/* --- CONFUSION MATRICES LEVEL 2: NEXT TWO SIDE-BY-SIDE CARDS --- */}
+      <section style={styles.sectionGridGap}>
+        <div style={styles.sectionHeading}>DETAILED VALIDATION MATRIX BREAKDOWN (PART 2)</div>
+        <div style={styles.matrixSideBySideRow}>
+          
+          {/* MODEL 3: RANDOM FOREST */}
+          <div className="clean-shadow" style={styles.largeMatrixContainer}>
+            <div style={styles.matrixHeaderBlock}>
+              <h3 style={styles.matrixTitle}>RANDOM FOREST MATRIX</h3>
+              <p style={styles.matrixSubText}>Ensemble decision trees analyzing complex layout parameter clusters.</p>
+            </div>
+            <div style={styles.largeMatrixHeatmapGrid}>
+              <div style={{ ...styles.largeMatrixCell, backgroundColor: '#14532d', color: '#ffffff' }}>
+                <span style={styles.largeCellLabel}>TRUE SAFE (TN)</span><strong>39,049</strong>
+              </div>
+              <div style={{ ...styles.largeMatrixCell, backgroundColor: '#dcfce7', color: '#14532d' }}>
+                <span style={styles.largeCellLabel}>FALSE PHISH (FP)</span><strong>151</strong>
+              </div>
+              <div style={{ ...styles.largeMatrixCell, backgroundColor: '#fef2f2', color: '#991b1b' }}>
+                <span style={styles.largeCellLabel}>FALSE SAFE (FN)</span><strong>8,348</strong>
+              </div>
+              <div style={{ ...styles.largeMatrixCell, backgroundColor: '#16a34a', color: '#ffffff' }}>
+                <span style={styles.largeCellLabel}>TRUE PHISH (TP)</span><strong>8,452</strong>
+              </div>
+            </div>
+            <div style={styles.progressionMatchRow}>
+              <span style={styles.progressionLabel}>True Matches</span>
+              <div style={styles.largeBarWrapper}>
+                <div style={{ ...styles.largeFilledBar, width: '84.8%', backgroundColor: '#16a34a' }}></div>
+              </div>
+              <span style={styles.progressionPercent}>84.8%</span>
+            </div>
+          </div>
+
+          {/* MODEL 4: ACTIVE MLP NEURAL NETWORK */}
+          <div className="clean-shadow" style={styles.largeMatrixContainer_Active}>
+            <div style={styles.matrixHeaderBlock}>
+              <div style={styles.activeEngineBadge}>ACTIVE PRODUCTION ENGINE</div>
+              <h3 style={{ ...styles.matrixTitle, color: '#c2410c' }}>MLP NEURAL NETWORK (DL) MATRIX</h3>
+              <p style={styles.matrixSubText}>Multi-Layer Perceptron artificial neural network detecting structural anomalies.</p>
+            </div>
+            <div style={styles.largeMatrixHeatmapGrid}>
+              <div style={{ ...styles.largeMatrixCell, backgroundColor: '#7c2d12', color: '#ffffff' }}>
+                <span style={styles.largeCellLabel_Active}>TRUE SAFE (TN)</span><strong>38,344</strong>
+              </div>
+              <div style={{ ...styles.largeMatrixCell, backgroundColor: '#ffedd5', color: '#7c2d12' }}>
+                <span style={styles.largeCellLabel_Active}>FALSE PHISH (FP)</span><strong>856</strong>
+              </div>
+              <div style={{ ...styles.largeMatrixCell, backgroundColor: '#fef2f2', color: '#991b1b' }}>
+                <span style={styles.largeCellLabel_Active}>FALSE SAFE (FN)</span><strong>837</strong>
+              </div>
+              <div style={{ ...styles.largeMatrixCell, backgroundColor: '#ea580c', color: '#ffffff' }}>
+                <span style={styles.largeCellLabel_Active}>TRUE PHISH (TP)</span><strong>15,963</strong>
+              </div>
+            </div>
+            <div style={styles.progressionMatchRow}>
+              <span style={styles.progressionLabel}>True Matches</span>
+              <div style={styles.largeBarWrapper}>
+                <div style={{ ...styles.largeFilledBar, width: '97.0%', backgroundColor: '#ea580c' }}></div>
+              </div>
+              <span style={{ ...styles.progressionPercent, color: '#ea580c' }}>97.0%</span>
+            </div>
+          </div>
+
+        </div>
       </section>
 
     </div>
@@ -212,49 +277,56 @@ export default function Home() {
 }
 
 const styles = {
-  container: { paddingBottom: '40px' },
-  headerBlock: { marginBottom: '36px', textAlign: 'left' },
-  mainTitle: { fontSize: 'calc(1.8rem + 1.2vw)', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 16px 0', letterSpacing: '-0.025em', lineHeight: '1.25' },
-  subTitle: { color: 'var(--text-muted)', margin: 0, fontSize: 'calc(0.98rem + 0.15vw)', maxWidth: '850px', lineHeight: '1.7', fontWeight: '500' },
+  container: { paddingBottom: '60px', maxWidth: '1650px', margin: '0 auto', padding: '0 24px' },
+  headerBlock: { marginBottom: '44px', textAlign: 'left', marginTop: '36px' },
+  mainTitle: { fontSize: 'calc(2.2rem + 1.2vw)', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 14px 0', letterSpacing: '-0.025em', lineHeight: '1.2' },
+  subTitle: { color: 'var(--text-muted)', margin: 0, fontSize: 'calc(1.15rem )', maxWidth: '1050px', lineHeight: '1.7', fontWeight: '400' },
   
-  sectionGap: { marginBottom: '44px' },
-  sectionHeading: { fontSize: 'calc(0.78rem + 0.1vw)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-muted)', marginBottom: '18px' },
+  sectionGap: { marginBottom: '52px' },
+  sectionGridGap: { marginBottom: '32px' }, // Symmetrical layout adjustment
+  sectionHeading: { fontSize: '15px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-muted)', marginBottom: '20px' },
   
   sixGridOverride: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '24px' },
   
-  verdictPanel: { marginTop: '32px', padding: '28px', borderRadius: '12px', borderLeft: '6px solid', transition: 'all 0.2s ease' },
-  verdictMeta: { fontSize: 'calc(0.75rem + 0.1vw)', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' },
-  verdictStatus: { margin: '8px 0', fontSize: 'calc(1.4rem + 0.2vw)', fontWeight: '800', letterSpacing: '-0.01em' },
-  verdictDesc: { margin: 0, color: 'var(--text-muted)', fontSize: 'calc(0.95rem + 0.1vw)', lineHeight: '1.6', fontWeight: '500' },
+  verdictPanel: { marginTop: '32px', padding: '30px', borderRadius: '14px', borderLeft: '8px solid' },
+  verdictMeta: { fontSize: '14px', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' },
+  verdictStatus: { margin: '8px 0', fontSize: 'calc(1.8rem + 0.4vw)', fontWeight: '900', letterSpacing: '-0.01em' },
+  verdictDesc: { margin: 0, color: 'var(--text-muted)', fontSize: '18px', lineHeight: '1.65', fontWeight: '500' },
 
-  dualGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '32px', width: '100%', marginTop: '20px' },
-  dataBlock: { backgroundColor: 'var(--bg-panel)', border: '1px solid var(--panel-border)', borderRadius: '12px', padding: '32px', textAlign: 'left', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' },
-  blockTitle: { fontSize: 'calc(1.2rem + 0.2vw)', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 16px 0', letterSpacing: '-0.01em' },
-  blockText: { fontSize: 'calc(0.93rem + 0.1vw)', color: 'var(--text-muted)', lineHeight: '1.7', margin: '0 0 20px 0', fontWeight: '500' },
+  // TWO CARDS PER LINE (SIDE BY SIDE ROW)
+  matrixSideBySideRow: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(540px, 1fr))', gap: '32px' },
+  largeMatrixContainer: { backgroundColor: 'var(--bg-panel)', border: '1px solid var(--panel-border)', borderRadius: '16px', padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '24px' },
+  largeMatrixContainer_Active: { backgroundColor: '#ffffff', border: '2.5px solid #fdba74', borderRadius: '16px', padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '24px', boxShadow: '0 10px 25px -5px rgb(234 88 12 / 0.1)' },
+  matrixHeaderBlock: { textAlign: 'left' },
+  matrixTitle: { fontSize: '20px', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 6px 0', letterSpacing: '-0.01em' },
+  matrixSubText: { fontSize: '15px', color: 'var(--text-muted)', margin: 0, lineHeight: '1.5' },
+  activeEngineBadge: { display: 'inline-block', padding: '4px 10px', backgroundColor: '#fff7ed', border: '1px solid #ffedd5', borderRadius: '6px', fontSize: '12px', fontWeight: '800', color: '#ea580c', marginBottom: '8px' },
+
+  largeMatrixHeatmapGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' },
+  largeMatrixCell: { padding: '26px 14px', borderRadius: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontSize: '32px', fontWeight: '900', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.01)' },
+  largeCellLabel: { fontSize: '12px', fontWeight: '700', opacity: 0.8, marginBottom: '6px', letterSpacing: '0.04em' },
+  largeCellLabel_Active: { fontSize: '12px', fontWeight: '700', marginBottom: '6px', letterSpacing: '0.04em' },
+
+  progressionMatchRow: { display: 'flex', alignItems: 'center', gap: '14px', marginTop: '6px' },
+  progressionLabel: { fontSize: '15px', fontWeight: '700', color: 'var(--text-muted)' },
+  largeBarWrapper: { flex: 1, height: '12px', backgroundColor: '#e2e8f0', borderRadius: '6px', overflow: 'hidden' },
+  largeFilledBar: { height: '100%', borderRadius: '6px' },
+  progressionPercent: { fontSize: '17px', fontWeight: '900', color: 'var(--text-main)', width: '54px', textAlign: 'right' },
+
+  // DATA SUMMARY RE-ALIGNED TABLE HOVER PANELS
+  glassBlock: { backgroundColor: 'var(--bg-panel)', border: '1px solid var(--panel-border)', borderRadius: '16px', padding: '40px', display: 'flex', flexDirection: 'column', gap: '32px' },
+  badgeLabel: { display: 'inline-block', alignSelf: 'flex-start', padding: '6px 14px', backgroundColor: 'var(--bg-canvas)', border: '1px solid var(--panel-border)', borderRadius: '6px', fontSize: '13px', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '4px' },
+  blockTitle: { fontSize: '26px', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 10px 0' },
+  blockText: { fontSize: '17px', color: 'var(--text-muted)', lineHeight: '1.65', margin: '0 0 12px 0' },
   
-  // High Visibility Fluid Metrics Table Layout
-  metricTable: { width: '100%', borderCollapse: 'collapse', fontSize: 'calc(0.92rem + 0.1vw)', marginBottom: '20px' },
-  tableHeaderRow: { borderBottom: '2px solid var(--panel-border)', backgroundColor: 'var(--bg-canvas)' },
-  tableTh: { textAlign: 'left', padding: '14px', color: 'var(--text-muted)', fontWeight: '700' },
-  tableTd: { padding: '14px', borderBottom: '1px solid var(--panel-border)' },
+  tableResponsiveWrapper: { width: '100%', overflowX: 'auto' },
+  metricTable: { width: '100%', minWidth: '600px', borderCollapse: 'collapse', fontSize: '16px' },
+  tableHeaderRow: { borderBottom: '3px solid var(--panel-border)', backgroundColor: 'var(--bg-canvas)' },
+  tableTh: { textAlign: 'left', padding: '18px 16px', color: 'var(--text-muted)', fontWeight: '700' },
+  tableTh_Active: { textAlign: 'left', padding: '18px 16px', color: '#ea580c', fontWeight: '800', backgroundColor: '#fff7ed' },
+  tableTd: { padding: '20px 16px', borderBottom: '1px solid var(--panel-border)', color: 'var(--text-main)' },
+  tableTd_ActiveContent: { padding: '20px 16px', borderBottom: '1px solid var(--panel-border)', color: '#ea580c', fontWeight: '700', backgroundColor: '#fff7ed' },
   tableEvenRow: { backgroundColor: '#f8fafc' },
   tableOddRow: { backgroundColor: '#ffffff' },
-
-  selectionAlert: { padding: '16px 20px', backgroundColor: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '6px', fontSize: 'calc(0.92rem + 0.1vw)', color: '#1e40af', lineHeight: '1.65' },
-  inlineCode: { fontFamily: 'monospace', backgroundColor: 'var(--bg-canvas)', padding: '3px 8px', borderRadius: '4px', border: '1px solid var(--panel-border)', color: 'var(--matrix-red)', fontSize: 'calc(0.85rem + 0.05vw)' },
-
-  // Large Interactive Confusion Matrix Output
-  chartFlex: { display: 'flex', flexDirection: 'column', gap: '24px', marginTop: '10px' },
-  miniChartContainer: { border: '1px solid var(--panel-border)', borderRadius: '8px', padding: '20px', backgroundColor: 'var(--bg-canvas)' },
-  chartHeader: { fontSize: 'calc(0.85rem + 0.1vw)', fontWeight: '700', color: 'var(--text-main)', marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.02em' },
-  
-  heatmapMatrixGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '20px' },
-  matrixCell: { padding: '18px', borderRadius: '6px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--panel-border)', fontSize: 'calc(1.2rem + 0.2vw)' },
-  cellLabel: { fontSize: 'calc(0.78rem + 0.05vw)', color: 'var(--text-muted)', fontWeight: '600', marginBottom: '6px', textTransform: 'uppercase' },
-
-  graphRow: { display: 'flex', alignItems: 'center', gap: '14px', marginTop: '10px' },
-  graphLabel: { width: '110px', fontSize: 'calc(0.9rem + 0.05vw)', color: 'var(--text-muted)', fontWeight: '600' },
-  barWrapper: { flex: 1, height: '12px', backgroundColor: '#e2e8f0', borderRadius: '6px', overflow: 'hidden' },
-  filledBar: { height: '100%', borderRadius: '6px' },
-  graphPercent: { width: '55px', fontSize: 'calc(0.9rem + 0.05vw)', color: 'var(--text-main)', fontWeight: '700', textAlign: 'right' }
+  selectionAlert: { padding: '20px 24px', backgroundColor: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '10px', fontSize: '16.5px', color: '#1e40af', lineHeight: '1.6' }
 };
