@@ -52,6 +52,8 @@ Follow these exact steps from scratch to clone and run this project on any local
    
     ```Bash
     python train.py
+    python check.py
+    python app.py
     ```
     (Wait 15–20 seconds for the [+] SUCCESS confirmation message, then you can close this terminal).
 
@@ -74,7 +76,7 @@ Follow these exact steps from scratch to clone and run this project on any local
    Execute the following command. This will simultaneously spin up the Python Flask API server and the React Vite development server:
 
    ```Bash
-   npm run dev
+   npm start
    ```
 
    What will happen next?
