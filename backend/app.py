@@ -2,15 +2,10 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import joblib
 import os
-import re
 
 app = Flask(__name__)
-CORS(app)  # React frontend allow karne ke liye
-
-# URL tokenizer function (Loading se pehle hona compulsory hai)
-def clean_url(url_text):
-    words = re.split(r'[/-_.\?=\s]', url_text)
-    return [w for w in words if len(w) > 0]
+# Enable Cross-Origin Resource Sharing for React Frontend integration
+CORS(app)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MPATH = os.path.join(BASE_DIR, 'models', 'phishing_dl_model.pkl')
@@ -21,13 +16,16 @@ encoder = None
 
 try:
     if os.path.exists(MPATH) and os.path.exists(EPATH):
+        # Character-level binaries don't require external tokenizers before deserialization
         model = joblib.load(MPATH)
         encoder = joblib.load(EPATH)
-        print("\n=============================")
-        print("[+] SUCCESS: Server Is Live!")
-        print("===============================\n")
+        print("\n=======================================================")
+        print("[+] SUCCESS: Pure AI Character-Wise Server Is Live!")
+        print("=======================================================\n")
+    else:
+        print("\n[-] ERROR: Models missing in 'models/' directory!\n")
 except Exception as e:
-    print(f"[-] Error loading models: {str(e)}")
+    print(f"[-] Error loading character models: {str(e)}")
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -37,46 +35,26 @@ def predict():
         
     try:
         data = request.get_json()
-        user_url = data.get('url', '').lower().strip()
+        user_url = str(data.get('url', '')).lower().strip()
         
+        # Guard rails for empty or incomplete payloads
         if not user_url:
             return jsonify({'error': 'No URL provided', 'status': 'failed'}), 400
             
         if len(user_url) < 4:
             return jsonify({'prediction': 'Safe', 'status': 'success'})
 
-        # PHISHING KEYWORD CHECK
-        phishing_keywords = ['secure-login', 'verify-paypal', 'free-netflix', 'account-update', 'gift-bonus', 'free-tokens']
-        if any(keyword in user_url for keyword in phishing_keywords):
-            return jsonify({'prediction': 'Phishing', 'status': 'success'})
-
-        # WHITELIST (In keywords par model ko bypass kar ke direct SAFE dega)
-        trusted_keywords = [
-            'google', 'facebook', 'github', 'wikipedia', 'gift', 'gift.edu',
-            'linkedin', 'microsoft', 'apple', 'youtube', 'gmail', 'yahoo', 
-            'chatgpt', 'openai', 'gemini', 'claude', 'instagram', 'twitter', 
-            'x.com', 'netflix', 'amazon', 'stackoverflow', 'coursera', 'whatsapp'
-        ]
-        
-        # Safe extensions checking (.edu or .gov or .org colleges/government sites)
-        safe_extensions = ['.gov', '.edu', '.org']
-        is_safe_ext = any(ext in user_url for ext in safe_extensions)
-
-        # Agar URL mein koi khatarnak word nahi hai aur woh mashhoor site ya edu/gov site hai:
-        if not any(bad in user_url for bad in ['login', 'verify', 'update', 'secure']):
-            if any(domain in user_url for domain in trusted_keywords) or is_safe_ext:
-                return jsonify({'prediction': 'Safe', 'status': 'success'})
-
-        # STANDARD PIPELINE EXECUTION (Baki aam links par 95% accuracy wala model chalega)
+        # PURE CHARACTER-LEVEL PREDICTION BOUNDARY LAYER
+        # The character-level matrices evaluate character sequences (sub-strings) natively
         features = encoder.transform([user_url])
         prediction = model.predict(features)[0]  
         
-        # Directly map model predictions (0 = Safe, 1 = Phishing)
+        # Binary target decoding (1 = Phishing, 0 = Safe)
         result = "Phishing" if prediction == 1 else "Safe"
         return jsonify({'prediction': result, 'status': 'success'})
         
     except Exception as e:
-        return jsonify({'error': str(e), 'status': 'failed'}), 500
+        return jsonify({'error': f"Runtime internal error: {str(e)}", 'status': 'failed'}), 500
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
