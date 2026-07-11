@@ -125,7 +125,7 @@ export default function Footer({ setCurrentTab }) {
       </div>
 
       <div style={styles.bottomRibbon}>
-        All rights reserved. © 2026 AntiPhish Engine Matrix by MK
+        All rights reserved. © {new Date().getFullYear()} AntiPhish Engine Matrix by MK & MM
       </div>
     </footer>
   );
